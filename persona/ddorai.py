@@ -41,8 +41,8 @@ class DDorai:
             await channel.send('점점점...')
             return True
         
-        elif content in ['와', '와!', 'WA', 'WA!']:
-            await message.reply('샌즈!')
+        elif content.rstrip('!') in ['와', 'WA']:
+            await message.reply('샌즈' + '!' * content.count('!'))
             return True
 
         elif '샌즈' in content:
@@ -52,7 +52,7 @@ class DDorai:
             return True
         
         else:
-            ran = random.randrange(1,20)
+            ran = random.randint(1, 20)
             if ran == 1:
                 await channel.send('어쩔티비')
             elif ran == 2:
