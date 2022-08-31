@@ -1,8 +1,7 @@
 import discord
 import random
-import datetime
+from config import token, KST
 
-token = '' ## 여기다 자신의 봇 토큰 붙여넣기 ##
 latest_time = {}
 latest_message = {}
 
@@ -16,8 +15,7 @@ class MyClient(discord.Client):
             return
         
         author, sharp_num = str(message.author).split('#') # 이름#1234 형태를 #을 기준으로 분리
-        now = message.created_at + datetime.timedelta(hours=9) # 세계 표준시 + 9시간
-        now -= datetime.timedelta(microseconds=now.microsecond) # 마이크로초 생략
+        now = message.created_at.astimezone(KST).replace(microsecond=0) # 마이크로초 생략
         
         print()
         print(author) # 메세지 친 사람

@@ -1,8 +1,8 @@
 import discord
 import random
-import time, datetime
+import time
+from config import token, KST
 
-token = '' ## 여기다 자신의 봇 토큰 붙여넣기 ##
 latest_time = {}
 latest_message = {}
 
@@ -24,7 +24,7 @@ class MyClient(discord.Client):
         print(author) # 메세지 친 사람
         print(message.content) # 메세지 내용
         print(message.channel)
-    
+        print(message.created_at.astimezone(KST).replace(microsecond=0))
 
         if message.content == 'ping':
             await message.channel.send('pong')
@@ -62,6 +62,7 @@ class MyClient(discord.Client):
             await message.channel.send('이제 더 이상의 대사는 없다.')
 
         # 사람마다 가장 최근의 최근 메세지 보낸 시각, 메세지 내용 저장
+        latest_time[author] = message.created_at.astimezone(KST)
         latest_message[author] = message.content
 
         print('------')
