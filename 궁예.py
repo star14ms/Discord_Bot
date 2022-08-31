@@ -1,7 +1,6 @@
 import discord
 import random
 import time, datetime
-from keep_running import keep_alive
 
 token = '' ## 여기다 자신의 봇 토큰 붙여넣기 ##
 latest_time = {}
@@ -65,6 +64,13 @@ class MyClient(discord.Client):
         # 사람마다 가장 최근의 최근 메세지 보낸 시각, 메세지 내용 저장
         latest_message[author] = message.content
 
-client = MyClient()
-keep_alive()
-client.run(token)
+        print('------')
+    
+
+if __name__ == '__main__':
+
+    intents = discord.Intents.default()
+    intents.message_content = True
+    
+    client = MyClient(intents=intents)
+    client.run(token)
