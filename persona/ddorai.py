@@ -16,23 +16,6 @@ class DDorai:
             await message.reply('pong')
             return True
 
-        elif content == '어쩔초고속진공블랜딩믹서기' or (
-            ('어쩔' in content or '저쩔' in content) and self.eojjeol_stack >= 3):
-            await message.reply('어쩔어쩔~ 저쩔저쩔~')
-            time.sleep(0.8)
-            await channel.send('안물티비~ 안궁티비~ 뇌절티비~')
-            time.sleep(0.8)
-            await channel.send('우짤래미~ 저짤래미~ 쿠쿠루삥뽕')
-            time.sleep(0.8)
-            self.eojjeol_stack = 0
-            return True
-
-        elif content in self.eojjeol_flows:
-            text = self.eojjeol_flows[self.eojjeol_flows.index(content)+1]
-            await message.reply(text)
-            self.eojjeol_stack += 1
-            return True
-
         elif content == '응~':
             await channel.send('아니야~')
             return True
@@ -50,6 +33,23 @@ class DDorai:
             time.sleep(0.8)
             await channel.send('겁.나.어.렵.습.니.다.')
             return True
+
+        elif content == '어쩔초고속진공블랜딩믹서기' or (
+            ('어쩔' in content or '저쩔' in content) and self.eojjeol_stack >= 3):
+            await message.reply('어쩔어쩔~ 저쩔저쩔~')
+            time.sleep(0.8)
+            await channel.send('안물티비~ 안궁티비~ 뇌절티비~')
+            time.sleep(0.8)
+            await channel.send('우짤래미~ 저짤래미~ 쿠쿠루삥뽕')
+            time.sleep(0.8)
+            self.eojjeol_stack = 0
+            return True
+
+        elif content in self.eojjeol_flows:
+            text = self.eojjeol_flows[self.eojjeol_flows.index(content)+1]
+            await message.reply(text)
+            self.eojjeol_stack += 1
+            return True
         
         else:
             ran = random.randint(1, 20)
@@ -58,7 +58,7 @@ class DDorai:
             elif ran == 2:
                 await channel.send('띠용')
             elif ran == 3:
-                await channel.send('그래서 뭐')
+                await channel.send('뿡')
             elif ran == 4:
                 await message.pin()
             return True

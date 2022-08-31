@@ -4,7 +4,7 @@ import time
 
 class GungYe:
     def __init__(self) -> None:
-        self.opening = False
+        self.state = 0
         self.achoo = False
         self.sin = False
 
@@ -12,7 +12,7 @@ class GungYe:
         content = message.content
         channel = message.channel
 
-        if '궁예' in content and not self.opening:
+        if '궁예' in content and self.state == 0:
             await channel.send('그래, 내가 궁예다.')
             time.sleep(1)
             await channel.send('도대체 그대들이 이 나라의 벼슬아치들인지,')
@@ -20,11 +20,7 @@ class GungYe:
             await channel.send('아니면 뒷간의 똥막대기인지')
             time.sleep(1)
             await channel.send('그걸 알 수가 없단 말이야.')
-            time.sleep(3)
-            await channel.send('그대들 모두 하나같이')
-            time.sleep(1)
-            await channel.send('똥으로 가득차있어, 똥 말이야')
-            self.opening = True
+            self.state = 1
             return True
 
         elif ('에취' in content or '콜록' in content or 'achoo' in content) and not self.achoo:
@@ -50,4 +46,11 @@ class GungYe:
             time.sleep(1)
             await channel.send('더 이상의 대사는 없다')
             self.__init__()
+            return True
+        
+        elif self.state == 1:
+            await channel.send('그대들 모두 하나같이')
+            time.sleep(1)
+            await channel.send('똥으로 가득차있어, 똥 말이야')
+            self.state = 2
             return True

@@ -1,5 +1,4 @@
 import discord
-import discord
 from discord.ext import commands
 from rich import print
 
@@ -35,7 +34,7 @@ async def on_message(message: discord.message.Message):
     now = message.created_at.astimezone(KST).replace(microsecond=0)
     
     print()
-    print(f'{now}, {message.channel} - {message.guild}') # 메세지 올라온 시각 / 서버 / 채팅방
+    print(f'{now}, {message.guild} - {message.channel}') # 메세지 올라온 시각 / 서버 / 채널
     print(author, message.content, sep=': ') # 메세지 친 사람 / 메세지 내용
     
     if message.content.startswith('!'):
