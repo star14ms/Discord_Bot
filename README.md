@@ -22,7 +22,23 @@ https://discord.com/oauth2/authorize?client_id=[client_id]&permissions=8&scope=b
 ### CLIENT_ID
 ![](img/client_id.png)
 
-### privileged_gateway_intents 
+### Privileged Gateway Intents
 - 채팅을 읽으려면 MESSAGE CONTENT INTENT 체크 필요
 
 ![](img/privileged_gateway_intents.png)
+
+---
+
+## 읽기 자료
+
+### discord.py
+
+[Home Page]()
+
+[Quick Start](https://discordpy.readthedocs.io/en/stable/quickstart.html)
+
+[discord.ext.commands.Bot](https://discordpy.readthedocs.io/en/stable/ext/commands/api.html#bots)
+
+
+### 명령어와 일반 메세지 처리 동시에 적용하기
+[is-it-possible-to-use-on-message-and-client-command-in-the-same-code](https://stackoverflow.com/questions/62150817/is-it-possible-to-use-on-message-and-client-command-in-the-same-code)
