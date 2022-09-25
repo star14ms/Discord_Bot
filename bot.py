@@ -3,19 +3,17 @@ from discord.ext import commands
 from rich import print
 
 from config import token, KST
-from persona import GungYe, LastChatReminder, DDorai
+from persona import Persona
 
 
 intents = discord.Intents.default()
 intents.message_content = True
 bot = commands.Bot(command_prefix='!', intents=intents)
+persona = Persona()
 
 
 @bot.event # 봇이 실행될 때
 async def on_ready():
-    bot.GungYe = GungYe()
-    bot.LastChatReminder = LastChatReminder(tzinfo=KST)
-    bot.DDorai = DDorai()
     bot.is_on_message_running = False
 
     print('\nLogged on as', bot.user)
@@ -38,13 +36,9 @@ async def on_message(message: discord.message.Message):
     print(author, message.content, sep=': ') # 메세지 친 사람 / 메세지 내용
     
     if message.content.startswith('!'):
-       await bot.process_commands(message)
+        await bot.process_commands(message)
     else:
-        response_message = await bot.GungYe.gwansimbeop(message)
-        if not response_message:
-            await bot.DDorai.check(message)
-        
-        bot.LastChatReminder.save_last_chat(message)
+        await persona.use(message)
 
     print('------')
     bot.is_on_message_running = False
@@ -58,7 +52,7 @@ async def ping(ctx):
 @bot.command(name='마지막채팅')
 async def _lastchat(ctx, member: str = None):
     if member is not None:
-        await bot.LastChatReminder.check(ctx.message, member)
+        await persona.LastChatReminder.check(ctx.message, member)
     else:
         await ctx.message.reply('!마지막채팅 [유저이름]')
     
