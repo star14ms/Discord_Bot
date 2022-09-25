@@ -14,6 +14,18 @@ https://discord.com/oauth2/authorize?client_id=[client_id]&permissions=8&scope=b
 
 ---
 
+## 파일 설명
+
+`bot.py` - 실행 시 봇 가동됨
+
+`config.py` - 실행할 봇 TOKEN 기입하는 곳
+
+`persona/*.py` - 봇의 페르소나들
+
+`utils.py` - 필요 시 이용할 만한 함수들
+
+---
+
 ## 봇 생성 페이지 중요 사항들 위치
 
 ### TOKEN

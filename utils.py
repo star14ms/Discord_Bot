@@ -24,7 +24,7 @@ def getattrs_and_print_all(something):
 
 
 def get_channel(channel_name: str, message: discord.message.Message = None, guild: discord.guild.Guild = None):
-    """채널 이름을 넣으면 그 채널을 메세지나 서버(길드)에서 찾아 돌려준다."""
+    """채널 이름을 넣으면 그 채널 오브젝트를 돌려준다. (메세지나 서버(길드) 필요)"""
 
     if message:
         guild = message.guild

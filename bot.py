@@ -11,7 +11,7 @@ intents.message_content = True
 bot = commands.Bot(command_prefix='!', intents=intents)
 
 
-@bot.event
+@bot.event # 봇이 실행될 때
 async def on_ready():
     bot.GungYe = GungYe()
     bot.LastChatReminder = LastChatReminder(tzinfo=KST)
@@ -22,7 +22,7 @@ async def on_ready():
     print('------')
 
 
-@bot.event
+@bot.event # 서버에서 메세지를 감지했을 때
 async def on_message(message: discord.message.Message):
     # don't respond to ourselves and prevent overlap
     if message.author == bot.user or bot.is_on_message_running:
