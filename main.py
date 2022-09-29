@@ -1,6 +1,5 @@
 import discord
 from discord.ext import commands
-from rich import print
 
 from config import token, KST
 from persona import Persona
