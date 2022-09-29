@@ -1,6 +1,10 @@
 import discord
 from discord.ext import commands
-from rich import print
+
+try:
+    from rich import print # rich 라이브러리 설치 시 로그가 더 멋있어짐
+except:
+    pass
 
 from config import token, KST
 from persona import Persona
