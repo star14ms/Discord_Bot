@@ -5,9 +5,9 @@
 1. 위에 링크에 들어가 봇을 만들고, TOKEN을 복사해 config.py에 붙여넣기
 - [MESSAGE CONTENT INTENT] 체크 필수! [참고](https://github.com/star14ms/Discord_Bot#privileged-gateway-intents)
 
-2. 봇의 CLIENT_ID를 복사해, 아래 링크 [client_id] 자리에 넣어 접속하기
+2. 봇의 CLIENT ID를 복사해, 아래 링크 CLIENT_ID 자리에 넣어 접속하기
 
-https://discord.com/oauth2/authorize?client_id=[client_id]&permissions=8&scope=bot
+https://discord.com/oauth2/authorize?permissions=8&scope=bot&client_id=CLIENT_ID
 
 3. 원하는 서버에 자신의 봇을 초대하기
 
