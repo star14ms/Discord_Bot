@@ -10,5 +10,5 @@ class PingPong:
         channel = message.channel # 메세지 보낸 채널
 
         if content == 'ping':
-            await channel.send('pong') # 채널에 메세지 보내기
+            await message.reply('pong') # 답장 보내기
             return True

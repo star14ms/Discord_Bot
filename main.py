@@ -7,13 +7,12 @@ except:
     pass
 
 from config import token, KST
-from persona import Persona
+from persona import persona
 
 
 intents = discord.Intents.default()
 intents.message_content = True
 bot = commands.Bot(command_prefix='!', intents=intents)
-persona = Persona()
 
 
 @bot.event # 봇이 실행될 때

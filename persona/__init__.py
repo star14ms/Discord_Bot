@@ -1,6 +1,7 @@
 import discord
 
 from config import KST
+from persona.copycat import CopyCat
 from persona.ddorai import DDorai
 from persona.gungye import GungYe
 from persona.last_chat_reminder import LastChatReminder
@@ -9,16 +10,27 @@ from persona.pingpong import PingPong
 
 class Persona:
     def __init__(self) -> None:
+        self.CopyCat = CopyCat()
         self.PingPong = PingPong()
         self.GungYe = GungYe()
         self.LastChatReminder = LastChatReminder(tzinfo=KST)
         self.DDorai = DDorai()
 
+        self.personas = [ # 페르소나 적용하는 곳 (위에서부터 하나씩 실행됨)
+            self.PingPong.check, 
+            self.CopyCat.copy,
+        ]
+
     async def use(self, message: discord.message.Message):
-        message_sended = await self.PingPong.check(message)
-        if not message_sended: # 여러 페르소나가 동시에 메세지를 보내지 않게 만들기
-            message_sended = await self.GungYe.gwansimbeop(message)
-        if not message_sended:
-            message_sended = await self.DDorai.check(message)
+        message_sended = False
+
+        for persona in self.personas:
+            if not message_sended: # 여러 페르소나가 동시에 메세지를 보내지 않게 만들기
+                message_sended = await persona(message)
+            else:
+                break
         
         self.LastChatReminder.save_last_chat(message)
+
+
+persona = Persona()

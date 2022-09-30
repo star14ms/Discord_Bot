@@ -26,10 +26,7 @@ class LastChatReminder:
         else:
             await message.reply(f'{member}(이)는 조용하구나')
 
-        if member in self.latest_time:
-            return True
-        else:
-            return False
+        return True
     
     def save_last_chat(self, message):
         now = message.created_at.astimezone(self.tzinfo)

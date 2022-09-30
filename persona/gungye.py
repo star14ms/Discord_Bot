@@ -21,14 +21,12 @@ class GungYe:
             time.sleep(1)
             await channel.send('그걸 알 수가 없단 말이야.')
             self.state = 1
-            return True
 
         elif ('에취' in content or '콜록' in content or 'achoo' in content) and not self.achoo:
             await message.reply('누구인가?')
             time.sleep(2)
             await channel.send('지금 누가 기침 소리를 내었어?')
             self.achoo = True
-            return True
 
         elif self.achoo and not self.sin:
             await channel.send('참으로 딱하구나.')
@@ -37,7 +35,6 @@ class GungYe:
             time.sleep(1)
             await channel.send('어찌 기침을 할 수 있느냐 이 미련한 것아아!!')
             self.sin = True
-            return True
 
         elif self.sin:
             await channel.send('내가 가만히 보니,')
@@ -46,11 +43,14 @@ class GungYe:
             time.sleep(1)
             await channel.send('더 이상의 대사는 없다')
             self.__init__()
-            return True
         
         elif self.state == 1:
             await channel.send('그대들 모두 하나같이')
             time.sleep(1)
             await channel.send('똥으로 가득차있어, 똥 말이야')
             self.state = 2
-            return True
+        
+        else:
+            return False
+
+        return True # 전송한 메세지 - 있음:True / 없음:False
