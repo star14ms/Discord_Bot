@@ -3,22 +3,27 @@
 [디스코드 봇 생성하는 곳](https://discord.com/developers/applications)
 
 1. 위에 링크에 들어가 봇을 만들고, TOKEN을 복사해 config.py에 붙여넣기
+- [MESSAGE CONTENT INTENT] 체크 필수! [참고](https://github.com/star14ms/Discord_Bot#privileged-gateway-intents)
 
 2. 봇의 CLIENT_ID를 복사해, 아래 링크 [client_id] 자리에 넣어 접속하기
 
 https://discord.com/oauth2/authorize?client_id=[client_id]&permissions=8&scope=bot
 
-3. 원하는 방에 봇을 참가시키기
+3. 원하는 서버에 자신의 봇을 초대하기
 
-4. bot.py 실행하기
+4. main.py 실행하기
 
 ---
 
 ## 파일 설명
 
-`bot.py` - 실행 시 봇 가동됨
+`main.py` - 실행 시 봇 가동됨
 
 `config.py` - 실행할 봇 TOKEN 기입하는 곳
+
+`command.py` - 봇 명령어 설정하는 곳
+
+`persona/__init__.py` - 봇의 페르소나 적용하는 곳
 
 `persona/*.py` - 봇의 페르소나들
 
