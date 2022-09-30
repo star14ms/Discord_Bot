@@ -3,6 +3,7 @@ import discord
 from config import KST
 from persona.copycat import CopyCat
 from persona.ddorai import DDorai
+from persona.gif_villain import GIF_Villain
 from persona.gungye import GungYe
 from persona.last_chat_reminder import LastChatReminder
 from persona.pingpong import PingPong
@@ -12,6 +13,7 @@ class Persona:
     def __init__(self) -> None:
         self.CopyCat = CopyCat()
         self.PingPong = PingPong()
+        self.GIF_Villain = GIF_Villain()
         self.GungYe = GungYe()
         self.LastChatReminder = LastChatReminder(tzinfo=KST)
         self.DDorai = DDorai()
