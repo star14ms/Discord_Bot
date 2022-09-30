@@ -1,5 +1,4 @@
 import discord
-from discord.ext import commands
 
 try:
     from rich import print # rich 라이브러리 설치 시 로그가 더 멋있어짐
@@ -7,12 +6,8 @@ except:
     pass
 
 from config import token, KST
+from command import bot
 from persona import persona
-
-
-intents = discord.Intents.default()
-intents.message_content = True
-bot = commands.Bot(command_prefix='!', intents=intents)
 
 
 @bot.event # 봇이 실행될 때
@@ -38,26 +33,13 @@ async def on_message(message: discord.message.Message):
     print(f'{now}, {message.guild} - {message.channel}') # 메세지 올라온 시각 / 서버 / 채널
     print(author, message.content, sep=': ') # 메세지 친 사람 / 메세지 내용
     
-    if message.content.startswith('!'):
+    if message.content.startswith(bot.command_prefix):
         await bot.process_commands(message)
     else:
         await persona.use(message)
 
     print('------')
     bot.is_on_message_running = False
-    
-
-@bot.command()
-async def ping(ctx):
-    await ctx.send(f'pong! {round(round(bot.latency, 4)*1000)}ms') # 봇의 핑을 pong! 이라는 메세지와 함께 전송한다. latency는 일정 시간마다 측정됨에 따라 정확하지 않을 수 있다.
-
-
-@bot.command(name='마지막채팅')
-async def _lastchat(ctx, member: str = None):
-    if member is not None:
-        await persona.LastChatReminder.check(ctx.message, member)
-    else:
-        await ctx.message.reply('!마지막채팅 [유저이름]')
     
 
 if __name__ == '__main__':
