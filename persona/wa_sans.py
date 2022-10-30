@@ -3,7 +3,7 @@ import random
 import time
 
 
-class DDorai:
+class WASans:
     def __init__(self) -> None:
         self.eojjeol_stack = 0
         self.eojjeol_flows = ['어쩔티비', '저쩔티비', '어쩔냉장고', '저쩔세탁기', '어쩔스타일러', '저쩔가습기', '어쩔초고속진공블랜딩믹서기']

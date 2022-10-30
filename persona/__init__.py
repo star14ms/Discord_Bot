@@ -1,12 +1,11 @@
 import discord
 
-from config import KST
 from persona.copycat import CopyCat
-from persona.ddorai import DDorai
 from persona.gif_villain import GIF_Villain
 from persona.gungye import GungYe
 from persona.last_chat_reminder import LastChatReminder
 from persona.pingpong import PingPong
+from persona.wa_sans import WASans
 
 
 class Persona:
@@ -15,8 +14,8 @@ class Persona:
         self.PingPong = PingPong()
         self.GIF_Villain = GIF_Villain()
         self.GungYe = GungYe()
-        self.LastChatReminder = LastChatReminder(tzinfo=KST)
-        self.DDorai = DDorai()
+        self.LastChatReminder = LastChatReminder()
+        self.WASans = WASans()
 
         self.personas = [ # 페르소나 적용하는 곳 (위에서부터 하나씩 실행됨)
             self.PingPong.check, 

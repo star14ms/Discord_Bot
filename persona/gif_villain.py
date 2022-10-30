@@ -17,6 +17,10 @@ class GIF_Villain:
         channel = message.channel # 메세지 보낸 채널
 
         query = quote_plus(content)
+
+        if 'http' in query:
+            return False
+
         url = f'https://tenor.com/search/{query}-gifs'
             
         soup = GIF_Villain.get_html_soup(url)
