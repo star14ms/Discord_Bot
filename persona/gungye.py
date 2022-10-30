@@ -8,7 +8,7 @@ class GungYe:
         self.achoo = False
         self.sin = False
 
-    async def gwansimbeop(self, message: discord.message.Message) -> bool:
+    async def check(self, message: discord.message.Message) -> bool: # gwansimbeop
         content = message.content
         channel = message.channel
 
