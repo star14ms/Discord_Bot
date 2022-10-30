@@ -17,11 +17,11 @@ https://discord.com/oauth2/authorize?permissions=8&scope=bot&client_id=CLIENT_ID
 
 ## 파일 설명
 
-`main.py` - 실행 시 봇 가동됨
+`main.py` - 실행 시 봇 가동됨 (봇 TOKEN 기입 필요)
 
-`config.py` - 실행할 봇 TOKEN 기입하는 곳
+`bot_base/command.py` - 봇 명령어 설정하는 곳
 
-`command.py` - 봇 명령어 설정하는 곳
+`bot_base/event.py` - 봇 이벤트 설정하는 곳
 
 `persona/__init__.py` - 봇의 페르소나 적용하는 곳
 
@@ -34,15 +34,15 @@ https://discord.com/oauth2/authorize?permissions=8&scope=bot&client_id=CLIENT_ID
 ## 봇 생성 페이지 중요 사항들 위치
 
 ### TOKEN
-![](img/token.png)
+![](bot_base/img/token.png)
 
 ### CLIENT_ID
-![](img/client_id.png)
+![](bot_base/img/client_id.png)
 
 ### Privileged Gateway Intents
 - 채팅을 읽으려면 MESSAGE CONTENT INTENT 체크 필요
 
-![](img/privileged_gateway_intents.png)
+![](bot_base/img/privileged_gateway_intents.png)
 
 ---
 
