@@ -11,6 +11,10 @@ from persona.what_time import WhatTime
 from persona.last_chat_reminder import LastChatReminder
 from persona.gif_villain import GIF_Villain
 from persona.continuation import Continuation
+try:
+    from persona.blenderbot import Blenderbot
+except ImportError:
+    pass
 
 
 class Persona:

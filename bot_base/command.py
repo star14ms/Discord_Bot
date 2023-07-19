@@ -75,3 +75,11 @@ async def _translate(ctx: Context, *args):
 
     except Exception as e:
         print(repr(e))
+
+
+@bot.command(aliases=['채팅'], help='clear user\'s conversation history')
+async def chat(ctx):
+    if not persona.blenderbot:
+        return
+
+    await persona.blenderbot.run(ctx.message)
