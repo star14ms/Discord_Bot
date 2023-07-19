@@ -15,23 +15,25 @@ from persona.continuation import Continuation
 
 class Persona:
     def __init__(self) -> None:
-        self.LastChatReminder = LastChatReminder()
-
         self.personas = [ # 페르소나 적용하는 곳 (위에서부터 하나씩 메세지를 보낼 때까지 실행됨)
             WASans(),
             Continuation(),
         ]
 
+        for persona in self.personas:
+            self.__setattr__(persona.__class__.__name__.lower(), persona)
+
     async def use(self, message: discord.message.Message):
         message_sended = False
 
         for persona in self.personas:
-            if not message_sended: # 여러 페르소나가 동시에 메세지를 보내지 않게 만들기
+            if not message_sended and persona.check is not None: # 여러 페르소나가 동시에 메세지를 보내지 않게 만들기
                 message_sended = await persona.check(message)
             else:
                 break
-        
-        self.LastChatReminder.save_last_chat(message)
+
+        if self.lastchatreminder:
+            self.lastchatreminder.save_last_chat(message)
 
 
 persona = Persona()

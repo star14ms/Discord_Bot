@@ -28,8 +28,8 @@ async def on_message(message: discord.message.Message):
         return
 
     bot.is_on_message_running = True
-    
-    author, sharp_num = str(message.author).split('#') # 이름#1234 형태를 #을 기준으로 분리
+
+    author = message.author.name
     now = message.created_at.astimezone(KST).replace(microsecond=0)
     
     print()

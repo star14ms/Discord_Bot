@@ -12,7 +12,7 @@ class LastChatReminder:
         self.latest_time = {}
         self.latest_message = {}
 
-    async def check(self, message: discord.message.Message, member: str):
+    async def run(self, message: discord.message.Message, member: str):
         now = message.created_at.astimezone(self.tzinfo).replace(microsecond=0) # 마이크로초 생략
 
         if member in self.latest_time:

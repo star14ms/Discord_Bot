@@ -3,7 +3,10 @@ import random
 import discord
 from discord.ext import commands
 from discord.ext.commands.context import Context
-import googletrans
+try:
+    import googletrans
+except:
+    pass
 
 from persona import persona
 
@@ -32,14 +35,20 @@ async def random_choose(ctx: Context, number: int = None, n_choice: int = None):
 
 @bot.command(name='마지막채팅')
 async def lastchat(ctx: Context, member: str = None):
+    if persona.lastchatreminder is None:
+        return 
+
     if member is None:
         await ctx.message.reply('```!마지막채팅 [유저이름]```')
     else:
-        await persona.LastChatReminder.check(ctx.message, member)
+        await persona.lastchatreminder.run(ctx.message, member)
 
 
 @bot.command(aliases=['번역', 'translate'])
 async def _translate(ctx: Context, *args):
+    if googletrans is None:
+        return await ctx.reply('```pip install googletrans```')
+
     embed = discord.Embed(
         title='언어 코드 종류',
         url='https://developers.google.com/admin-sdk/directory/v1/languages/',
@@ -49,6 +58,7 @@ async def _translate(ctx: Context, *args):
 
     if len(args) == 0:
         await ctx.message.reply(help, embed=embed)
+        return
     elif len(args) == 1:
         lang, text = 'en', args[0]
     else:
