@@ -36,7 +36,7 @@ class Persona:
             else:
                 break
 
-        if self.lastchatreminder:
+        if hasattr(self, 'lastchatreminder'):
             self.lastchatreminder.save_last_chat(message)
 
 

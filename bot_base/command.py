@@ -35,7 +35,7 @@ async def random_choose(ctx: Context, number: int = None, n_choice: int = None):
 
 @bot.command(name='마지막채팅')
 async def lastchat(ctx: Context, member: str = None):
-    if persona.lastchatreminder is None:
+    if hasattr(persona, 'lastchatreminder') is None:
         return 
 
     if member is None:
