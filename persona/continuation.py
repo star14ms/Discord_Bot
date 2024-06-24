@@ -24,6 +24,8 @@ class Continuation:
     async def check(self, message: discord.message.Message):
         content = message.content # 메세지 내용
         channel = message.channel # 메세지 보낸 채널
+        
+        content = content.strip().lower()
 
         message_language = Continuation._get_language(content)
         if message_language == None:
@@ -73,6 +75,7 @@ class Continuation:
 
             if len(words) > 0:
                 word = random.choice(words)
+                word = word[0].upper() + word[1:]
                 last_char = word[-1]
                 
                 if self.language == 'ko':
@@ -92,11 +95,12 @@ class Continuation:
     
         return True
     
-    def _get_language(self, content):
-        if all(char.isalpha() for char in content):
-            return 'en'
-        elif all(is_hangul_syllable(char) for char in content):
+    @staticmethod
+    def _get_language(content):
+        if all(is_hangul_syllable(char) for char in content):
             return 'ko'
+        elif all(char.isalpha() for char in content):
+            return 'en'
         else:
             return None
     
