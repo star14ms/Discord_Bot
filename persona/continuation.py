@@ -5,12 +5,13 @@ from urllib.error import HTTPError
 from bs4 import BeautifulSoup as bs
 import random
 
-from utils.unicode import check_hangul, is_hangul_compat_jamo, split_syllable_char, join_jamos_char
+from utils.unicode import is_hangul_syllable, split_syllable_char, join_jamos_char
 
 
 class Continuation:
     def __init__(self):
         self.last_char_dict = {}
+        self.language = None
 
     @staticmethod
     def get_html_soup(url: str):
@@ -24,30 +25,44 @@ class Continuation:
         content = message.content # 메세지 내용
         channel = message.channel # 메세지 보낸 채널
 
-        try:
-            for char in content:
-                check_hangul(char)
-                assert not is_hangul_compat_jamo(char)
-        except:
+        message_language = Continuation._get_language(content)
+        if message_language == None:
             return False
-
+        elif self.language == None:
+            self.language = message_language
+        elif self.language != message_language:
+            await message.reply(
+                'We are playing a game in ' + ('Enlgish' if self.language == 'en' else 'Korean')
+            )
+            return True
+        
         last_char = self.last_char_dict.get(f'{message.guild} - {channel}')
     
         word_exists = Continuation._word_exists(content)
         is_continue_word = last_char is None or last_char == content[0]
 
-        if not is_continue_word:
+        if not is_continue_word and self.language == 'ko':
             last_char_secondary = Continuation._get_last_char_secondary(last_char)
             is_continue_word = last_char_secondary == content[0] 
-
+        else:
+            last_char_secondary = None
+            
         if not is_continue_word or not word_exists:
             if not word_exists:
-                await message.reply('그런 단어는 없다!')
+                await message.reply(
+                    '그런 단어는 없다!' if self.language == 'ko' else 
+                    'There is no such word!'
+                )
             elif not is_continue_word:
                 secondary_info = f'({last_char_secondary})' if last_char_secondary is not None else ''
-                await message.reply(f"'{last_char}{secondary_info}'(으)로 시작하는 말이 아니다!")
+                await message.reply(
+                    f"'{last_char}{secondary_info}'(으)로 시작하는 말이 아니다!" if self.language == 'ko' else 
+                    f"It's not a word that starts with '{last_char}{secondary_info}'!")
             
-            await channel.send('내가 이겼다')
+            await channel.send(
+                '내가 이겼다' if self.language == 'ko' else
+                'I won!'
+            )
     
             # words = Continuation._search_answer_words(last_char)
             # words = random.sample(words, min(len(words), 5))
@@ -59,19 +74,54 @@ class Continuation:
             if len(words) > 0:
                 word = random.choice(words)
                 last_char = word[-1]
-                last_char_secondary = Continuation._get_last_char_secondary(last_char)
-                secondary_info = f'({last_char_secondary})' if last_char_secondary is not None else ''
+                
+                if self.language == 'ko':
+                    last_char_secondary = Continuation._get_last_char_secondary(last_char)
+                    secondary_info = f'({last_char_secondary})' if last_char_secondary is not None else ''
+                else: 
+                    secondary_info = ''
                 await message.reply(word + secondary_info)
             else:
                 last_char = None
-                await channel.send('내가 졌다')
+                await channel.send(
+                    '내가 졌다' if self.language == 'ko' else
+                    'I lost!'
+                )
 
         self.last_char_dict.update([(f'{message.guild} - {channel}', last_char)])
     
         return True
-
+    
+    def _get_language(self, content):
+        if all(char.isalpha() for char in content):
+            return 'en'
+        elif all(is_hangul_syllable(char) for char in content):
+            return 'ko'
+        else:
+            return None
+    
     @staticmethod
     def _word_exists(content):
+        content = quote_plus(content)
+        
+        # check if alphabets are included using re
+        if all(char.isalpha() for char in content):
+            return Continuation._word_exists_english(content)
+        else:
+            return Continuation._word_exists_korean(content)
+
+    @staticmethod
+    def _word_exists_english(content):
+        url = f"https://www.dictionary.com/browse/{quote_plus(content)}"
+
+        try:
+            Continuation.get_html_soup(url)
+            return True
+        except HTTPError as e:
+            return False
+
+    @staticmethod
+    def _word_exists_korean(content):
         url = f"https://kkukowiki.kr/&search={quote_plus(content)}&fulltext=1"
         soup = Continuation.get_html_soup(url)
         result = soup.find('ul', 'mw-search-results')
@@ -90,7 +140,7 @@ class Continuation:
         return True
 
     @staticmethod
-    def _get_last_char_secondary(last_char):
+    def _get_last_char_secondary(last_char): # 두음법칙
         (initial, medial, final) = split_syllable_char(last_char)
 
         if initial in 'ㄴㄹ' and medial in 'ㅑㅕㅖㅛㅠㅣ':
@@ -100,6 +150,26 @@ class Continuation:
 
     @staticmethod
     def _search_answer_words(content, is_secondary_search=False):
+        if all(char.isalpha() for char in content):
+            return Continuation._search_answer_words_english(content)
+        else:
+            return Continuation._search_answer_words_korean(content, is_secondary_search)
+
+    @staticmethod
+    def _search_answer_words_english(content):
+        last_char = content[-1]
+        url = f"https://www.dictionary.com/e/word-finder/words-that-start-with-{last_char}"
+        
+        words = []
+        soup = Continuation.get_html_soup(url)
+        
+        for n_letter_word_list in soup.find_all('ul', 'list--words'):
+            words.extend([li.text.replace('\n', '') for li in n_letter_word_list.find_all('li')])
+
+        return words
+
+    @staticmethod
+    def _search_answer_words_korean(content, is_secondary_search=False):
         last_char = content[-1]
         url = f"https://kkukowiki.kr/w/{quote_plus(f'역대_단어/한국어/{last_char}', safe='/')}"
 

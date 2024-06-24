@@ -19,19 +19,23 @@ except ImportError:
 
 class Persona:
     def __init__(self) -> None:
-        self.personas = [ # 페르소나 적용하는 곳 (위에서부터 하나씩 메세지를 보낼 때까지 실행됨)
-            WASans(),
+        # The place where personas are applied (Executed one by one until a message is sent
+        # 페르소나 적용하는 곳 (위에서부터 하나씩 메세지를 보낼 때까지 실행됨)
+        self.personas = [ # Change the order of the personas to change the priority
+            WASans(), 
             Continuation(),
         ]
 
         for persona in self.personas:
             self.__setattr__(persona.__class__.__name__.lower(), persona)
 
-    async def use(self, message: discord.message.Message):
+    async def reply(self, message: discord.message.Message):
         message_sended = False
 
         for persona in self.personas:
-            if not message_sended and persona.check is not None: # 여러 페르소나가 동시에 메세지를 보내지 않게 만들기
+            # Prevent multiple personas from sending messages at the same time
+            # 여러 페르소나가 동시에 메세지를 보내지 않게 만들기
+            if not message_sended and persona.check is not None:
                 message_sended = await persona.check(message)
             else:
                 break
