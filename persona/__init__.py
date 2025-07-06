@@ -6,15 +6,17 @@ from persona.pingpong2 import PingPong2
 from persona.part_timer import PartTimer
 from persona.calculator import Calculator
 from persona.wa_sans import WASans
+from persona.android_no18 import Android_No18
 from persona.gungye import GungYe
 from persona.what_time import WhatTime
 from persona.last_chat_reminder import LastChatReminder
 from persona.gif_villain import GIF_Villain
 from persona.continuation import Continuation
-try:
-    from persona.blenderbot import Blenderbot
-except ImportError:
-    pass
+from persona.openai_chat import OpenAIChat
+# try:
+#     from persona.blenderbot import Blenderbot
+# except ImportError:
+#     pass
 
 
 class Persona:

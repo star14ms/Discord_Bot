@@ -83,3 +83,21 @@ async def chat(ctx):
         return
 
     await persona.blenderbot.run(ctx.message)
+
+
+@bot.command(aliases=['봇규칙'], help='See the system message of openai bot')
+async def readcontext(ctx):
+    if not persona.openaichat:
+        return
+
+    await ctx.message.reply('Current system message:\n```{}```'.format(persona.openaichat.system_message))
+
+
+@bot.command(aliases=['봇규칙수정'], help='Reset the system message of openai bot')
+async def setcontext(ctx):
+    if not persona.openaichat:
+        return
+    
+    new_system_message = ctx.message.content.split('!봇규칙수정 ')[1]
+    persona.openaichat.system_message = new_system_message
+    await ctx.message.reply('System message has been reset:\n```{}```'.format(new_system_message))
