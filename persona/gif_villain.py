@@ -16,17 +16,18 @@ class GIF_Villain:
         content = message.content # 메세지 내용
         channel = message.channel # 메세지 보낸 채널
 
-        query = quote_plus(content)
-
-        if 'http' in query:
+        if 'http' in content:
             return False
 
-        url = f'https://tenor.com/search/{query}-gifs'
+        content = content.replace('?', '')
+        if content.strip() == '':
+            return False
+        url = f'https://tenor.com/search/{quote_plus(content)}-gifs'
             
         soup = GIF_Villain.get_html_soup(url)
         
         gif_els = soup.findAll('div', 'Gif')
-        gifs_top_n = gif_els[:top_n] if len(gif_els) >= top_n else gif_el
+        gifs_top_n = gif_els[:top_n] 
         gif_el = random.choice(gifs_top_n)
         gif_src = gif_el.img['src']
         

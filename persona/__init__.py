@@ -24,9 +24,13 @@ class Persona:
         # The place where personas are applied (Executed one by one until a message is sent
         # 페르소나 적용하는 곳 (위에서부터 하나씩 메세지를 보낼 때까지 실행됨)
         self.personas = [ # Change the order of the personas to change the priority
-            WASans(), 
-            Continuation(),
+            PingPong(),
+            GIF_Villain(), 
         ]
+        # self.personas = [ # Change the order of the personas to change the priority
+        #     # OpenAIChat(),
+        #     Continuation(),
+        # ]
 
         for persona in self.personas:
             self.__setattr__(persona.__class__.__name__.lower(), persona)

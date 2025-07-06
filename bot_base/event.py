@@ -41,8 +41,9 @@ async def on_message(message: discord.message.Message):
     try:
         if message.content.startswith(bot.command_prefix):
             await bot.process_commands(message)
-        elif message.guild is None or message.channel.name in ['병기실험장', '놀이터', '봇실험실'] or (
-            'Continuation' in [persona.__class__.__name__ for persona in persona.personas] and message.channel.name in ['끝말잇기', '봇실험실']
+        elif message.guild is None or (
+            'Continuation' not in [persona.__class__.__name__ for persona in persona.personas] and message.channel.name in ['병기실험장', '놀이터', '봇실험실']) or (
+            'Continuation' in [persona.__class__.__name__ for persona in persona.personas] and message.channel.name in ['끝말잇기', 'continuation']
         ):
             await persona.reply(message)
     except Exception as e:
