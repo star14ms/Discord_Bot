@@ -7,7 +7,7 @@ except:
     pass
 
 from bot_base.command import bot
-from persona import persona
+from persona import persona, Continuation
 
 
 KST = datetime.timezone(datetime.timedelta(hours=9)) # UTC+9 Korea (KST) (한국 시간대)
@@ -23,12 +23,6 @@ async def on_ready():
 
 @bot.event # When a message is sent (메세지가 올라올 때)
 async def on_message(message: discord.message.Message):
-    # don't respond to ourselves and prevent overlap
-    if message.author == bot.user or bot.is_on_message_running:
-        return
-
-    bot.is_on_message_running = True
-
     author = message.author.name
     now = message.created_at.astimezone(KST).replace(microsecond=0)
     
@@ -36,10 +30,20 @@ async def on_message(message: discord.message.Message):
     print('{}, {} - {}'.format(now, message.guild, message.channel)) # now, server name - channel name
     print('{}: {}'.format(author, message.content)) # author: message content
 
+    # don't respond to ourselves and prevent overlap
+    if message.author == bot.user or bot.is_on_message_running:
+        return
+    # elif message.author == 'star14ms':
+    #     return
+        
+    bot.is_on_message_running = True
+    
     try:
         if message.content.startswith(bot.command_prefix):
             await bot.process_commands(message)
-        else:
+        elif message.guild is None or message.channel.name in ['병기실험장', '놀이터', '봇실험실'] or (
+            'Continuation' in [persona.__class__.__name__ for persona in persona.personas] and message.channel.name in ['끝말잇기', '봇실험실']
+        ):
             await persona.reply(message)
     except Exception as e:
         print(e)

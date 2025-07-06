@@ -1,11 +1,11 @@
-import discord
 from urllib.request import Request, urlopen
-from urllib.parse import quote_plus
+import discord
+from urllib.parse import quote_plus, quote
 from urllib.error import HTTPError
 from bs4 import BeautifulSoup as bs
 import random
 
-from utils.unicode import is_hangul_syllable, split_syllable_char, join_jamos_char
+from utils.unicode import split_syllable_char, join_jamos_char, is_hangul
 
 
 class Continuation:
@@ -29,7 +29,10 @@ class Continuation:
 
         message_language = Continuation._get_language(content)
         if message_language == None:
-            return False
+            await message.reply(
+                'We are playing a game in ' + ('Enlgish' if self.language == 'en' else 'Korean')
+            )
+            return True
         elif self.language == None:
             self.language = message_language
         elif self.language != message_language:
@@ -62,7 +65,7 @@ class Continuation:
                     f"It's not a word that starts with '{last_char}{secondary_info}'!")
             
             await channel.send(
-                '내가 이겼다' if self.language == 'ko' else
+                '내 승리다!' if self.language == 'ko' else
                 'I won!'
             )
     
@@ -97,22 +100,20 @@ class Continuation:
     
     @staticmethod
     def _get_language(content):
-        if all(is_hangul_syllable(char) for char in content):
+        if all(is_hangul(char) for char in content):
             return 'ko'
-        elif all(char.isalpha() for char in content):
+        elif content.encode().isalpha():
             return 'en'
         else:
             return None
     
     @staticmethod
     def _word_exists(content):
-        content = quote_plus(content)
-        
         # check if alphabets are included using re
-        if all(char.isalpha() for char in content):
-            return Continuation._word_exists_english(content)
-        else:
+        if all(is_hangul(char) for char in content):
             return Continuation._word_exists_korean(content)
+        else:
+            return Continuation._word_exists_english(content)
 
     @staticmethod
     def _word_exists_english(content):
@@ -154,10 +155,10 @@ class Continuation:
 
     @staticmethod
     def _search_answer_words(content, is_secondary_search=False):
-        if all(char.isalpha() for char in content):
-            return Continuation._search_answer_words_english(content)
-        else:
+        if all(is_hangul(char) for char in content):
             return Continuation._search_answer_words_korean(content, is_secondary_search)
+        else:
+            return Continuation._search_answer_words_english(content)
 
     @staticmethod
     def _search_answer_words_english(content):
